@@ -45,8 +45,6 @@ const filteredResponseHeaders = new Set([
   "x-request-id",
 ]);
 
-installFileReaderPolyfill();
-
 Polly.register(FetchAdapter);
 Polly.register(FSPersister);
 
@@ -60,40 +58,44 @@ export async function withCassette<T>(
   cassetteName: string,
   callback: () => Promise<T>,
 ): Promise<T> {
-  const polly = new Polly(cassetteName, {
-    adapters: ["fetch"],
-    persister: "fs",
-    mode: cassetteMode(),
-    recordIfMissing: false,
-    logLevel: "error",
-    matchRequestsBy: {
-      method: true,
-      headers: false,
-      body: false,
-      order: false,
-      url: {
-        protocol: true,
-        hostname: true,
-        port: true,
-        pathname: true,
-        query: true,
-        hash: false,
-      },
-    },
-    persisterOptions: {
-      fs: { recordingsDir: cassetteRoot },
-      keepUnusedRequests: false,
-    },
-  });
-
-  polly.server.any().on("beforePersist", (_request, recording) => {
-    redactRecording(recording);
-  });
+  const restoreFileReader = installFileReaderPolyfill();
+  let polly: Polly | undefined;
 
   try {
+    polly = new Polly(cassetteName, {
+      adapters: ["fetch"],
+      persister: "fs",
+      mode: cassetteMode(cassetteName),
+      recordIfMissing: false,
+      logLevel: "error",
+      matchRequestsBy: {
+        method: true,
+        headers: false,
+        body: false,
+        order: false,
+        url: {
+          protocol: true,
+          hostname: true,
+          port: true,
+          pathname: true,
+          query: true,
+          hash: false,
+        },
+      },
+      persisterOptions: {
+        fs: { recordingsDir: cassetteRoot },
+        keepUnusedRequests: false,
+      },
+    });
+
+    polly.server.any().on("beforePersist", (_request, recording) => {
+      redactRecording(recording);
+    });
+
     return await callback();
   } finally {
-    await polly.stop();
+    await polly?.stop();
+    restoreFileReader();
   }
 }
 
@@ -102,20 +104,32 @@ export function redactRecording(recording: HarRecording): void {
   redactResponseHeaders(recording.response?.headers);
 }
 
-function cassetteMode(): MODE {
-  return isRecording() ? "record" : "replay";
+function cassetteMode(cassetteName: string): MODE {
+  const recordMode = recordingMode();
+
+  if (recordMode === "once") {
+    return hasRecording(cassetteName) ? "replay" : "record";
+  }
+
+  return ["all", "record", "update"].includes(recordMode) ? "record" : "replay";
 }
 
 function isRecording(): boolean {
-  const recordMode = process.env.AIAND_VCR_RECORD_MODE?.toLowerCase() ?? "none";
+  return ["all", "once", "record", "update"].includes(recordingMode());
+}
 
-  return ["all", "once", "record", "update"].includes(recordMode);
+function recordingMode(): string {
+  return process.env.AIAND_VCR_RECORD_MODE?.toLowerCase() ?? "none";
 }
 
 function hasRecordings(cassetteNames: string[]): boolean {
   const recordedNames = new Set(recordingNames());
 
   return cassetteNames.every((name) => recordedNames.has(name));
+}
+
+function hasRecording(cassetteName: string): boolean {
+  return recordingNames().includes(cassetteName);
 }
 
 function recordingNames(): string[] {
@@ -155,9 +169,11 @@ function redactResponseHeaders(headers: HarHeader[] | undefined): void {
   }
 }
 
-function installFileReaderPolyfill(): void {
-  if ("FileReader" in globalThis) {
-    return;
+function installFileReaderPolyfill(): () => void {
+  const globalWithFileReader = globalThis as unknown as Record<string, unknown>;
+
+  if ("FileReader" in globalWithFileReader) {
+    return () => {};
   }
 
   class NodeFileReader {
@@ -180,5 +196,9 @@ function installFileReaderPolyfill(): void {
     }
   }
 
-  (globalThis as unknown as { FileReader: typeof NodeFileReader }).FileReader = NodeFileReader;
+  globalWithFileReader["FileReader"] = NodeFileReader;
+
+  return () => {
+    delete globalWithFileReader["FileReader"];
+  };
 }

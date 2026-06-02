@@ -12,6 +12,9 @@
   "bugs": {
     "url": "https://github.com/aiandlabs/aiand-typescript/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "aiand",
     "ai&",
