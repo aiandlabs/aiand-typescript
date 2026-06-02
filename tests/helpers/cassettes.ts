@@ -32,12 +32,20 @@ const cassetteRoot = join(
   "cassettes",
 );
 
-const filteredResponseHeaders = new Set([
+const filteredRequestHeaders = new Set([
   "authorization",
+  "api-key",
+  "cookie",
+  "x-aiand-api-key",
+  "x-aiand-org-id",
+  "x-api-key",
+  "x-org-id",
+]);
+
+const filteredResponseHeaders = new Set([
+  ...filteredRequestHeaders,
   "cf-ray",
   "set-cookie",
-  "x-aiand-org-id",
-  "x-org-id",
   "x-request-id",
   "x-ratelimit-limit-requests",
   "x-ratelimit-remaining-requests",
@@ -126,11 +134,19 @@ function urlPath(url: string): string {
   return `${parsed.pathname}${parsed.search}`;
 }
 
-function sanitizeRequestHeaders(headers: Headers): HeadersRecord {
+export function sanitizeRequestHeaders(headers: Headers): HeadersRecord {
   const result: HeadersRecord = {};
 
   headers.forEach((value, key) => {
-    result[key] = key.toLowerCase() === "authorization" ? "Bearer <AIAND_API_KEY>" : value;
+    const normalizedKey = key.toLowerCase();
+
+    if (normalizedKey === "authorization") {
+      result[key] = "Bearer <AIAND_API_KEY>";
+    } else if (filteredRequestHeaders.has(normalizedKey)) {
+      result[key] = "<filtered>";
+    } else {
+      result[key] = value;
+    }
   });
 
   return result;
@@ -163,4 +179,3 @@ function writeCassette(path: string, cassette: Cassette): void {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(cassette, null, 2)}\n`);
 }
-
