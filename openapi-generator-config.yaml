@@ -1,0 +1,10 @@
+npmName: "@aiand/sdk"
+npmVersion: 0.1.0
+sourceFolder: src
+supportsES6: true
+typescriptThreePlus: true
+useSingleRequestParameter: true
+withInterfaces: true
+modelPropertyNaming: original
+disallowAdditionalPropertiesIfNotPresent: false
+

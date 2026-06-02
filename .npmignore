@@ -1,0 +1,12 @@
+openapi/
+scripts/
+tests/
+.openapi-generator/
+.openapi-generator-ignore
+openapi-generator-config.yaml
+openapitools.json
+tsconfig.json
+vitest.config.ts
+.env.test
+.env.test.example
+
