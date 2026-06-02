@@ -5,16 +5,13 @@ LICENSE
 package.json
 package-lock.json
 tsconfig.json
-tsconfig.esm.json
 vitest.config.ts
 .gitignore
-.npmignore
 .openapi-generator-ignore
 openapi-generator-config.yaml
 openapitools.json
 scripts/**
 tests/**
-.env.test.example
 
-# Generated project plumbing we keep hand-maintained or omit.
+# Generated project plumbing we omit.
 git_push.sh

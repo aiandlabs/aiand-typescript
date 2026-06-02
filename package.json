@@ -47,7 +47,7 @@
   },
   "scripts": {
     "update-sdk": "./scripts/update-sdk",
-    "build": "tsup src/index.ts --format cjs,esm --dts --sourcemap --clean",
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "lint": "tsc --noEmit",
     "test": "vitest run",
     "test:vcr": "vitest run tests/openai-api-vcr.test.ts",
