@@ -22,6 +22,7 @@ const CASSETTES = [
   "uploads-complete",
   "uploads-cancel",
 ];
+const VCR_TEST_TIMEOUT = 30_000;
 
 const describeVcr = canRunVcrSuite(CASSETTES) ? describe : describe.skip;
 
@@ -34,7 +35,7 @@ describeVcr("ai& API VCR coverage", () => {
     expect(response.object).toBe("list");
     expect(response.data.length).toBeGreaterThan(0);
     expect(response.data[0].id).toBeTruthy();
-  });
+  }, VCR_TEST_TIMEOUT);
 
   it("creates a chat completion", async () => {
     const client = new OpenaiApi(configuration("chat-completion"));
@@ -51,7 +52,7 @@ describeVcr("ai& API VCR coverage", () => {
     expect(response.object).toBe("chat.completion");
     expect(response.choices.length).toBeGreaterThan(0);
     expect(response.choices[0].message.role).toBe("assistant");
-  });
+  }, VCR_TEST_TIMEOUT);
 
   it("creates a legacy completion", async () => {
     const client = new OpenaiApi(configuration("completion"));
@@ -68,7 +69,7 @@ describeVcr("ai& API VCR coverage", () => {
     expect(response.object).toBe("text_completion");
     expect(response.choices.length).toBeGreaterThan(0);
     expect(response.choices[0].text).toBeDefined();
-  });
+  }, VCR_TEST_TIMEOUT);
 
   it("creates a response", async () => {
     const client = new OpenaiApi(configuration("response"));
@@ -91,7 +92,7 @@ describeVcr("ai& API VCR coverage", () => {
     );
     expect(response.model).toBeTruthy();
     expect(response.output).toBeDefined();
-  });
+  }, VCR_TEST_TIMEOUT);
 
   it("covers the file lifecycle", async () => {
     const files = new FilesApi(configuration("files-lifecycle"));
@@ -112,7 +113,7 @@ describeVcr("ai& API VCR coverage", () => {
     expect(Buffer.from(await content.arrayBuffer())).toEqual(PNG_BYTES);
     expect(deleted.id).toBe(uploaded.id);
     expect(deleted.deleted).toBe(true);
-  });
+  }, VCR_TEST_TIMEOUT);
 
   it("covers completing a chunked upload", async () => {
     const fetchApi = createCassetteFetch("uploads-complete");
@@ -143,7 +144,7 @@ describeVcr("ai& API VCR coverage", () => {
     expect(completed.file?.id.startsWith("file-")).toBe(true);
     expect(deleted.id).toBe(completed.file?.id);
     expect(deleted.deleted).toBe(true);
-  });
+  }, VCR_TEST_TIMEOUT);
 
   it("covers cancelling a chunked upload", async () => {
     const uploads = new UploadsApi(configuration("uploads-cancel"));
@@ -161,7 +162,7 @@ describeVcr("ai& API VCR coverage", () => {
     expect(upload.status).toBe("pending");
     expect(cancelled.id).toBe(upload.id);
     expect(cancelled.status).toBe("cancelled");
-  });
+  }, VCR_TEST_TIMEOUT);
 });
 
 function configuration(cassetteName: string): Configuration {

@@ -1,0 +1,131 @@
+{
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/uploads",
+        "headers": {
+          "authorization": "Bearer <AIAND_API_KEY>",
+          "content-type": "application/json"
+        },
+        "body": "<body>"
+      },
+      "response": {
+        "status": 200,
+        "statusText": "OK",
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "alt-svc": "h3=\":443\"; ma=86400",
+          "cf-ray": "<filtered>",
+          "connection": "keep-alive",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 02 Jun 2026 17:16:57 GMT",
+          "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+          "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=WaGLlphY2RJ3Uxt52tCZoH2RaVBKmlya%2BREkXkHQCVTImHWB8AgtGdyxL9tPsYQkbw%2BTMrY%2FUzGtTC6tyKO5zbMKrfEji4xNrEU%2BrVkuVFNL%2BQj2f6kFaqMmR8auYQ3m\"}]}",
+          "server": "cloudflare",
+          "strict-transport-security": "max-age=2592000",
+          "transfer-encoding": "chunked",
+          "vary": "Origin, Origin",
+          "x-request-id": "<filtered>"
+        },
+        "bodyBase64": "eyJpZCI6InVwbG9hZC04OGVkNzUwOTc0MGY0ZjEzODYxZTRiMzJkMTY1NzhkNSIsIm9iamVjdCI6InVwbG9hZCIsImJ5dGVzIjo2OCwiY3JlYXRlZF9hdCI6MTc4MDQyMDYxNywiZXhwaXJlc19hdCI6MTc4MDQyNDIxNiwiZmlsZW5hbWUiOiJhaWFuZC12Y3ItdXBsb2FkLnBuZyIsInB1cnBvc2UiOiJ2aXNpb24iLCJzdGF0dXMiOiJwZW5kaW5nIiwiZmlsZSI6bnVsbH0="
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/uploads/upload-88ed7509740f4f13861e4b32d16578d5/parts",
+        "headers": {
+          "authorization": "Bearer <AIAND_API_KEY>",
+          "content-type": "multipart/form-data; boundary=----formdata-undici-053340518403"
+        },
+        "body": "<multipart/form-data>"
+      },
+      "response": {
+        "status": 200,
+        "statusText": "OK",
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "alt-svc": "h3=\":443\"; ma=86400",
+          "cf-ray": "<filtered>",
+          "connection": "keep-alive",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 02 Jun 2026 17:16:59 GMT",
+          "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+          "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=9mNgi7p8QHbtr2U5hxIxJ%2BPbhYs%2BOglvJGr16kFLISIfJm7Im2UovfT3PUsnG%2BPIQJr7fYQrpX3jongR7UJwtFwj%2Fa%2FOqrOp8DpUEMuss87euCV1CDYOG0pHv8Ry%2BKie\"}]}",
+          "server": "cloudflare",
+          "strict-transport-security": "max-age=2592000",
+          "transfer-encoding": "chunked",
+          "vary": "Origin",
+          "x-request-id": "<filtered>"
+        },
+        "bodyBase64": "eyJpZCI6InBhcnQtOWRmNjNiYzI2YjE0NDM3ODg4NWM0YzA4MTI0MzBiYWEiLCJvYmplY3QiOiJ1cGxvYWQucGFydCIsInVwbG9hZF9pZCI6InVwbG9hZC04OGVkNzUwOTc0MGY0ZjEzODYxZTRiMzJkMTY1NzhkNSIsImNyZWF0ZWRfYXQiOjE3ODA0MjA2MTl9"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/uploads/upload-88ed7509740f4f13861e4b32d16578d5/complete",
+        "headers": {
+          "authorization": "Bearer <AIAND_API_KEY>",
+          "content-type": "application/json"
+        },
+        "body": "<body>"
+      },
+      "response": {
+        "status": 200,
+        "statusText": "OK",
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "alt-svc": "h3=\":443\"; ma=86400",
+          "cf-ray": "<filtered>",
+          "connection": "keep-alive",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 02 Jun 2026 17:17:02 GMT",
+          "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+          "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=Ja6%2Fa5UL9l78QmdgTZ0II2cx6TE9FOiwkMpiNeolmy84kE%2BXOm3FPnof8HsiJTXdXj6BYO7VKw7TidY%2F239HE0D2n0BJ1Q70wKxOmnpn3%2B6ldbj0xg8IAnvGj6b5D8yY\"}]}",
+          "server": "cloudflare",
+          "strict-transport-security": "max-age=2592000",
+          "transfer-encoding": "chunked",
+          "vary": "Origin",
+          "x-request-id": "<filtered>"
+        },
+        "bodyBase64": "eyJpZCI6InVwbG9hZC04OGVkNzUwOTc0MGY0ZjEzODYxZTRiMzJkMTY1NzhkNSIsIm9iamVjdCI6InVwbG9hZCIsImJ5dGVzIjo2OCwiY3JlYXRlZF9hdCI6MTc4MDQyMDYxNywiZXhwaXJlc19hdCI6MTc4MDQyNDIxNiwiZmlsZW5hbWUiOiJhaWFuZC12Y3ItdXBsb2FkLnBuZyIsInB1cnBvc2UiOiJ2aXNpb24iLCJzdGF0dXMiOiJjb21wbGV0ZWQiLCJmaWxlIjp7ImlkIjoiZmlsZS0zMDUyMDY2MDhlYmY0ZGY5YjI5YjJmYjVlMzNiNTA2ZCIsIm9iamVjdCI6ImZpbGUiLCJieXRlcyI6NjgsImNyZWF0ZWRfYXQiOjE3ODA0MjA2MjEsImV4cGlyZXNfYXQiOjE3ODMwMTI2MjEsImZpbGVuYW1lIjoiYWlhbmQtdmNyLXVwbG9hZC5wbmciLCJwdXJwb3NlIjoidmlzaW9uIn19"
+      }
+    },
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/v1/files/file-305206608ebf4df9b29b2fb5e33b506d",
+        "headers": {
+          "authorization": "Bearer <AIAND_API_KEY>"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "statusText": "OK",
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "alt-svc": "h3=\":443\"; ma=86400",
+          "cf-ray": "<filtered>",
+          "connection": "keep-alive",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 02 Jun 2026 17:17:03 GMT",
+          "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+          "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=%2BEGS8Fkm0aYnUZZTN4X2LtJ8qH1a2HgN%2FlnhXaGbdHCrnfUw33eTRZWQoVW%2BA%2FTVIFeufI42pJNCqi6tlRET3YE0LbQGtuvYlDx1DCB%2BrfFWBf6ege06EkkdaWePjcks\"}]}",
+          "server": "cloudflare",
+          "strict-transport-security": "max-age=2592000",
+          "transfer-encoding": "chunked",
+          "vary": "Origin",
+          "x-request-id": "<filtered>"
+        },
+        "bodyBase64": "eyJpZCI6ImZpbGUtMzA1MjA2NjA4ZWJmNGRmOWIyOWIyZmI1ZTMzYjUwNmQiLCJvYmplY3QiOiJmaWxlIiwiZGVsZXRlZCI6dHJ1ZX0="
+      }
+    }
+  ]
+}

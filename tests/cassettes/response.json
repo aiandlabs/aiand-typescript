@@ -1,0 +1,41 @@
+{
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/responses",
+        "headers": {
+          "authorization": "Bearer <AIAND_API_KEY>",
+          "content-type": "application/json"
+        },
+        "body": "<body>"
+      },
+      "response": {
+        "status": 200,
+        "statusText": "OK",
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "alt-svc": "h3=\":443\"; ma=86400",
+          "cf-ray": "<filtered>",
+          "connection": "keep-alive",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 02 Jun 2026 17:16:51 GMT",
+          "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+          "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=e13%2Bi7uysVdY6w4QiFcmALTjDKWHeiuST8LVDnOSaQBiMKG9P6PqpQZKoJSYlO8eBLYQ6%2BAh2W9pSF1cfROEIFGC90NWHtBLG%2BH6XY2Yb7hhHvmTiV%2BF%2FrRG2G9fUyWS\"}]}",
+          "server": "cloudflare",
+          "strict-transport-security": "max-age=2592000",
+          "transfer-encoding": "chunked",
+          "vary": "Origin",
+          "x-model": "openai/gpt-oss-120b",
+          "x-org-id": "<filtered>",
+          "x-processing-ms": "1058",
+          "x-ratelimit-limit": "1000",
+          "x-ratelimit-remaining": "999",
+          "x-request-id": "<filtered>"
+        },
+        "bodyBase64": "eyJpZCI6InJlc3BfODU5NWU2ZDU5Mjg2YTcxZCIsImNyZWF0ZWRfYXQiOjE3ODA0MjA2MTEsImluY29tcGxldGVfZGV0YWlscyI6eyJyZWFzb24iOiJtYXhfb3V0cHV0X3Rva2VucyJ9LCJpbnN0cnVjdGlvbnMiOm51bGwsIm1ldGFkYXRhIjpudWxsLCJtb2RlbCI6Im9wZW5haS9ncHQtb3NzLTEyMGIiLCJvYmplY3QiOiJyZXNwb25zZSIsIm91dHB1dCI6W3siaWQiOiJyc19hZDlkMDJjOGRlOGQ2MTY3Iiwic3VtbWFyeSI6W10sInR5cGUiOiJyZWFzb25pbmciLCJjb250ZW50IjpbeyJ0ZXh0IjoiVGhlIHVzZXIgc2F5czogXCJSZXBseSB3aXRoIGV4YWN0bHkgb25lIiwidHlwZSI6InJlYXNvbmluZ190ZXh0In1dLCJlbmNyeXB0ZWRfY29udGVudCI6bnVsbCwic3RhdHVzIjpudWxsfV0sInBhcmFsbGVsX3Rvb2xfY2FsbHMiOmZhbHNlLCJ0ZW1wZXJhdHVyZSI6MCwidG9vbF9jaG9pY2UiOiJhdXRvIiwidG9vbHMiOltdLCJ0b3BfcCI6MSwiYmFja2dyb3VuZCI6ZmFsc2UsIm1heF9vdXRwdXRfdG9rZW5zIjoxMiwibWF4X3Rvb2xfY2FsbHMiOm51bGwsInByZXZpb3VzX3Jlc3BvbnNlX2lkIjpudWxsLCJwcm9tcHQiOm51bGwsInJlYXNvbmluZyI6bnVsbCwic2VydmljZV90aWVyIjoiYXV0byIsInN0YXR1cyI6ImluY29tcGxldGUiLCJ0ZXh0IjpudWxsLCJ0b3BfbG9ncHJvYnMiOm51bGwsInRydW5jYXRpb24iOiJkaXNhYmxlZCIsInVzYWdlIjp7ImlucHV0X3Rva2VucyI6NzQsImlucHV0X3Rva2Vuc19kZXRhaWxzIjp7ImNhY2hlZF90b2tlbnMiOjY0LCJpbnB1dF90b2tlbnNfcGVyX3R1cm4iOls3NF0sImNhY2hlZF90b2tlbnNfcGVyX3R1cm4iOls2NF19LCJvdXRwdXRfdG9rZW5zIjoxMiwib3V0cHV0X3Rva2Vuc19kZXRhaWxzIjp7InJlYXNvbmluZ190b2tlbnMiOjEwLCJ0b29sX291dHB1dF90b2tlbnMiOjAsIm91dHB1dF90b2tlbnNfcGVyX3R1cm4iOlsxMl0sInRvb2xfb3V0cHV0X3Rva2Vuc19wZXJfdHVybiI6WzBdfSwidG90YWxfdG9rZW5zIjo4Nn0sInVzZXIiOm51bGwsImt2X3RyYW5zZmVyX3BhcmFtcyI6bnVsbCwiaW5wdXRfbWVzc2FnZXMiOm51bGwsIm91dHB1dF9tZXNzYWdlcyI6bnVsbH0="
+      }
+    }
+  ]
+}

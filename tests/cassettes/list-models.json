@@ -1,0 +1,37 @@
+{
+  "interactions": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/v1/models",
+        "headers": {
+          "authorization": "Bearer <AIAND_API_KEY>"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "statusText": "OK",
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "alt-svc": "h3=\":443\"; ma=86400",
+          "cf-ray": "<filtered>",
+          "connection": "keep-alive",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 02 Jun 2026 17:16:47 GMT",
+          "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+          "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=uNPANZ5xJ%2BmU3AGrc8UZx25bAPgHbaj65mtG1Onchuc7VhfIzfP7K%2BHZWupiUafaGDAeQi32szpF2Yf2UXE4cPuJn01RO1CC8BvgOa3AobFfAQr9zXvMJV2cTmCKs7c1\"}]}",
+          "server": "cloudflare",
+          "strict-transport-security": "max-age=2592000",
+          "transfer-encoding": "chunked",
+          "vary": "Origin",
+          "x-org-id": "<filtered>",
+          "x-processing-ms": "1960",
+          "x-request-id": "<filtered>"
+        },
+        "bodyBase64": "eyJvYmplY3QiOiJsaXN0IiwiZGF0YSI6W3siaWQiOiJkZWVwc2Vlay1haS9kZWVwc2Vlay12NC1mbGFzaCIsIm5hbWUiOiJkZWVwc2Vlay1haS9EZWVwU2Vlay1WNC1GbGFzaCIsIm9iamVjdCI6Im1vZGVsIiwiY3JlYXRlZCI6MTc4MDI0NTIzMiwib3duZWRfYnkiOiJhaSYiLCJwcm92aWRlciI6ImRlZXBzZWVrLWFpIiwiY29udGV4dF93aW5kb3ciOjEwNDg1NzYsImNhcGFiaWxpdGllcyI6WyJyZWFzb25pbmciLCJ0b29sX2NhbGxpbmciXSwiZGVzY3JpcHRpb24iOiJEZWVwU2Vlay1WNC1GbGFzaCIsImlucHV0X3Blcl8xbSI6IjAuMTUwMDAwIiwib3V0cHV0X3Blcl8xbSI6IjAuMjUwMDAwIn0seyJpZCI6ImRlZXBzZWVrLWFpL2RlZXBzZWVrLXY0LXBybyIsIm5hbWUiOiJkZWVwc2Vlay1haS9EZWVwU2Vlay1WNC1Qcm8iLCJvYmplY3QiOiJtb2RlbCIsImNyZWF0ZWQiOjE3ODAyNDUzNjQsIm93bmVkX2J5IjoiYWkmIiwicHJvdmlkZXIiOiJkZWVwc2Vlay1haSIsImNvbnRleHRfd2luZG93IjoxMDQ4NTc2LCJjYXBhYmlsaXRpZXMiOlsicmVhc29uaW5nIiwidG9vbF9jYWxsaW5nIl0sImRlc2NyaXB0aW9uIjoiRGVlcFNlZWstVjQtUHJvIiwiaW5wdXRfcGVyXzFtIjoiMS4wMDAwMDAiLCJvdXRwdXRfcGVyXzFtIjoiMi41MDAwMDAifSx7ImlkIjoicXdlbi9xd2VuMy42LTI3YiIsIm5hbWUiOiJxd2VuL3F3ZW4zLjYtMjdiIiwib2JqZWN0IjoibW9kZWwiLCJjcmVhdGVkIjoxNzgwMjQ1MDc3LCJvd25lZF9ieSI6ImFpJiIsInByb3ZpZGVyIjoicXdlbiIsImNvbnRleHRfd2luZG93IjoyNjIxNDQsImNhcGFiaWxpdGllcyI6WyJyZWFzb25pbmciLCJ0b29sX2NhbGxpbmciXSwiZGVzY3JpcHRpb24iOiJRd2VuMy42LTI3QiIsImlucHV0X3Blcl8xbSI6IjAuMDAwMDAwIiwib3V0cHV0X3Blcl8xbSI6IjAuMDAwMDAwIn0seyJpZCI6Imdvb2dsZS9nZW1tYS00LTMxYi1pdCIsIm5hbWUiOiJnb29nbGUvZ2VtbWEtNC0zMWItaXQiLCJvYmplY3QiOiJtb2RlbCIsImNyZWF0ZWQiOjE3NzU0NzQ1MTQsIm93bmVkX2J5IjoiYWkmIiwicHJvdmlkZXIiOiJnb29nbGUiLCJjb250ZXh0X3dpbmRvdyI6MjYyMTQ0LCJjYXBhYmlsaXRpZXMiOlsicmVhc29uaW5nIiwidG9vbF9jYWxsaW5nIiwidmlzaW9uIiwidmlkZW8iLCJkb2N1bWVudCJdLCJkZXNjcmlwdGlvbiI6Ikdvb2dsZSBHZW1tYSA0IDMxQiBpbnN0cnVjdGlvbi10dW5lZCIsImlucHV0X3Blcl8xbSI6IjAuMjAwMDAwIiwib3V0cHV0X3Blcl8xbSI6IjAuNTAwMDAwIn0seyJpZCI6InphaS1vcmcvZ2xtLTUuMSIsIm5hbWUiOiJ6YWktb3JnL2dsbS01LjEiLCJvYmplY3QiOiJtb2RlbCIsImNyZWF0ZWQiOjE3NzU2MzMwNjQsIm93bmVkX2J5IjoiYWkmIiwicHJvdmlkZXIiOiJ6YWktb3JnIiwiY29udGV4dF93aW5kb3ciOjIwMjc1MiwiY2FwYWJpbGl0aWVzIjpbInJlYXNvbmluZyIsInRvb2xfY2FsbGluZyJdLCJkZXNjcmlwdGlvbiI6IkdMTS01LjEgYnkgWmhpcHVBSSIsImlucHV0X3Blcl8xbSI6IjEuNDAwMDAwIiwib3V0cHV0X3Blcl8xbSI6IjQuNDAwMDAwIn0seyJpZCI6Im9wZW5haS9ncHQtb3NzLTEyMGIiLCJuYW1lIjoib3BlbmFpL2dwdC1vc3MtMTIwYiIsIm9iamVjdCI6Im1vZGVsIiwiY3JlYXRlZCI6MTc3NTQ3NDUxNCwib3duZWRfYnkiOiJhaSYiLCJwcm92aWRlciI6Im9wZW5haSIsImNvbnRleHRfd2luZG93IjoxMzEwNzIsImNhcGFiaWxpdGllcyI6WyJyZWFzb25pbmciLCJ0b29sX2NhbGxpbmciXSwiZGVzY3JpcHRpb24iOiJPcGVuQUkgR1BUIE9TUyAxMjBCIiwiaW5wdXRfcGVyXzFtIjoiMC4xNTAwMDAiLCJvdXRwdXRfcGVyXzFtIjoiMC42MDAwMDAifSx7ImlkIjoibW9vbnNob3RhaS9raW1pLWsyLjYiLCJuYW1lIjoibW9vbnNob3RhaS9raW1pLWsyLjYiLCJvYmplY3QiOiJtb2RlbCIsImNyZWF0ZWQiOjE3Nzc1NDQ2OTAsIm93bmVkX2J5IjoiYWkmIiwicHJvdmlkZXIiOiJtb29uc2hvdGFpIiwiY29udGV4dF93aW5kb3ciOjI2MjE0NCwiY2FwYWJpbGl0aWVzIjpbInJlYXNvbmluZyIsInRvb2xfY2FsbGluZyIsInZpc2lvbiIsImRvY3VtZW50Il0sImRlc2NyaXB0aW9uIjoiS2ltaSBLMi42IGJ5IE1vb25zaG90IEFJIiwiaW5wdXRfcGVyXzFtIjoiMC44NTAwMDAiLCJvdXRwdXRfcGVyXzFtIjoiMy41MDAwMDAifV19"
+      }
+    }
+  ]
+}
