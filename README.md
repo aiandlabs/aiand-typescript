@@ -267,8 +267,8 @@ behavior, not reformatted by hand.
 
 ## Recording HTTP Cassettes
 
-Tests include a small VCR-style fetch recorder for live API coverage. Cassettes live in
-`tests/cassettes`.
+Tests use [PollyJS](https://netflix.github.io/pollyjs/) for VCR-style live API coverage.
+Polly records HAR fixtures under `tests/cassettes`.
 
 To record cassettes, create `.env.test`:
 
@@ -282,19 +282,20 @@ Then run:
 ./scripts/record-cassettes
 ```
 
-The cassette config filters the `Authorization` header and common response organization
-headers. The recording script sets `AIAND_VCR_RECORD_MODE=once`. Do not commit `.env.test`.
-Only commit sanitized cassette files.
+The cassette config filters the request `Authorization` header and the same response
+headers as the Python SDK before HAR fixtures are written. The recording script sets
+`AIAND_VCR_RECORD_MODE=once`. Do not commit `.env.test`. Only commit sanitized cassette
+files.
 
-The VCR suite records one compact cassette per public endpoint group:
+The VCR suite records one Polly HAR cassette per public endpoint group:
 
-- `list-models.json`
-- `chat-completion.json`
-- `completion.json`
-- `response.json`
-- `files-lifecycle.json`
-- `uploads-complete.json`
-- `uploads-cancel.json`
+- `list-models`
+- `chat-completion`
+- `completion`
+- `response`
+- `files-lifecycle`
+- `uploads-complete`
+- `uploads-cancel`
 
 Together those cassettes hit every endpoint currently generated from the OpenAPI spec:
 `GET /v1/models`, `POST /v1/chat/completions`, `POST /v1/completions`,

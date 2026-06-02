@@ -1,29 +1,30 @@
 import { Buffer } from "node:buffer";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { expect } from "vitest";
+import FetchAdapter from "@pollyjs/adapter-fetch";
+import { Polly, type MODE } from "@pollyjs/core";
+import FSPersister from "@pollyjs/persister-fs";
 
-type HeadersRecord = Record<string, string>;
+interface HarHeader {
+  name: string;
+  value: string;
+}
 
-interface Interaction {
-  request: {
-    method: string;
-    path: string;
-    headers: HeadersRecord;
-    body: string | null;
+interface HarRecording {
+  request?: {
+    headers?: HarHeader[];
   };
-  response: {
-    status: number;
-    statusText: string;
-    headers: HeadersRecord;
-    bodyBase64: string;
+  response?: {
+    headers?: HarHeader[];
   };
 }
 
-interface Cassette {
-  interactions: Interaction[];
+interface HarFile {
+  log?: {
+    _recordingName?: string;
+  };
 }
 
 const cassetteRoot = join(
@@ -32,150 +33,152 @@ const cassetteRoot = join(
   "cassettes",
 );
 
-const filteredRequestHeaders = new Set([
-  "authorization",
-  "api-key",
-  "cookie",
-  "x-aiand-api-key",
-  "x-aiand-org-id",
-  "x-api-key",
-  "x-org-id",
-]);
-
 const filteredResponseHeaders = new Set([
-  ...filteredRequestHeaders,
+  "authorization",
   "cf-ray",
   "set-cookie",
-  "x-request-id",
+  "x-aiand-org-id",
+  "x-org-id",
   "x-ratelimit-limit-requests",
   "x-ratelimit-remaining-requests",
   "x-ratelimit-reset-requests",
+  "x-request-id",
 ]);
 
+installFileReaderPolyfill();
+
+Polly.register(FetchAdapter);
+Polly.register(FSPersister);
+
 export function canRunVcrSuite(cassetteNames: string[]): boolean {
-  const recordMode = process.env.AIAND_VCR_RECORD_MODE?.toLowerCase() ?? "none";
   const hasKey = Boolean(process.env.AIAND_API_KEY);
-  const hasAllCassettes = cassetteNames.every((name) => existsSync(cassettePath(name)));
 
-  return hasAllCassettes || (recordMode !== "none" && hasKey);
+  return hasRecordings(cassetteNames) || (isRecording() && hasKey);
 }
 
-export function createCassetteFetch(cassetteName: string): typeof fetch {
-  const path = cassettePath(cassetteName);
+export async function withCassette<T>(
+  cassetteName: string,
+  callback: () => Promise<T>,
+): Promise<T> {
+  const polly = new Polly(cassetteName, {
+    adapters: ["fetch"],
+    persister: "fs",
+    mode: cassetteMode(),
+    recordIfMissing: false,
+    logLevel: "error",
+    matchRequestsBy: {
+      method: true,
+      headers: false,
+      body: false,
+      order: false,
+      url: {
+        protocol: true,
+        hostname: true,
+        port: true,
+        pathname: true,
+        query: true,
+        hash: false,
+      },
+    },
+    persisterOptions: {
+      fs: { recordingsDir: cassetteRoot },
+      keepUnusedRequests: false,
+    },
+  });
+
+  polly.server.any().on("beforePersist", (_request, recording) => {
+    redactRecording(recording);
+  });
+
+  try {
+    return await callback();
+  } finally {
+    await polly.stop();
+  }
+}
+
+export function redactRecording(recording: HarRecording): void {
+  redactRequestHeaders(recording.request?.headers);
+  redactResponseHeaders(recording.response?.headers);
+}
+
+function cassetteMode(): MODE {
+  return isRecording() ? "record" : "replay";
+}
+
+function isRecording(): boolean {
   const recordMode = process.env.AIAND_VCR_RECORD_MODE?.toLowerCase() ?? "none";
-  const shouldRecord = recordMode === "all" || (recordMode === "once" && !existsSync(path));
 
-  if (shouldRecord) {
-    const cassette: Cassette = { interactions: [] };
-    return async (input, init) => {
-      const request = new Request(input, init);
-      const response = await fetch(request);
-      const body = Buffer.from(await response.clone().arrayBuffer());
-      const interaction: Interaction = {
-        request: {
-          method: request.method,
-          path: urlPath(request.url),
-          headers: sanitizeRequestHeaders(request.headers),
-          body: requestBodyDescription(request),
-        },
-        response: {
-          status: response.status,
-          statusText: response.statusText,
-          headers: sanitizeResponseHeaders(response.headers),
-          bodyBase64: body.toString("base64"),
-        },
-      };
+  return ["all", "once", "record", "update"].includes(recordMode);
+}
 
-      cassette.interactions.push(interaction);
-      writeCassette(path, cassette);
+function hasRecordings(cassetteNames: string[]): boolean {
+  const recordedNames = new Set(recordingNames());
 
-      return new Response(body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers: response.headers,
-      });
-    };
+  return cassetteNames.every((name) => recordedNames.has(name));
+}
+
+function recordingNames(): string[] {
+  if (!existsSync(cassetteRoot)) {
+    return [];
   }
 
-  if (!existsSync(path)) {
-    throw new Error(
-      `No cassette found for ${cassetteName}. Put AIAND_API_KEY in .env.test and run scripts/record-cassettes.`,
-    );
+  return readdirSync(cassetteRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => join(cassetteRoot, entry.name, "recording.har"))
+    .filter((path) => existsSync(path))
+    .map((path) => JSON.parse(readFileSync(path, "utf8")) as HarFile)
+    .flatMap((har) => (har.log?._recordingName ? [har.log._recordingName] : []));
+}
+
+function redactRequestHeaders(headers: HarHeader[] | undefined): void {
+  if (!headers) {
+    return;
   }
 
-  const cassette = JSON.parse(readFileSync(path, "utf8")) as Cassette;
-  let index = 0;
-
-  return async (input, init) => {
-    const request = new Request(input, init);
-    const interaction = cassette.interactions[index++];
-
-    if (!interaction) {
-      throw new Error(`No recorded interaction ${index} in cassette ${cassetteName}.`);
+  for (const header of headers) {
+    if (header.name.toLowerCase() === "authorization") {
+      header.value = "Bearer <AIAND_API_KEY>";
     }
-
-    expect(request.method).toBe(interaction.request.method);
-    expect(urlPath(request.url)).toBe(interaction.request.path);
-
-    return new Response(Buffer.from(interaction.response.bodyBase64, "base64"), {
-      status: interaction.response.status,
-      statusText: interaction.response.statusText,
-      headers: interaction.response.headers,
-    });
-  };
+  }
 }
 
-function cassettePath(name: string): string {
-  return join(cassetteRoot, `${name}.json`);
-}
+function redactResponseHeaders(headers: HarHeader[] | undefined): void {
+  if (!headers) {
+    return;
+  }
 
-function urlPath(url: string): string {
-  const parsed = new URL(url);
-  return `${parsed.pathname}${parsed.search}`;
-}
-
-export function sanitizeRequestHeaders(headers: Headers): HeadersRecord {
-  const result: HeadersRecord = {};
-
-  headers.forEach((value, key) => {
-    const normalizedKey = key.toLowerCase();
-
-    if (normalizedKey === "authorization") {
-      result[key] = "Bearer <AIAND_API_KEY>";
-    } else if (filteredRequestHeaders.has(normalizedKey)) {
-      result[key] = "<filtered>";
-    } else {
-      result[key] = value;
+  for (const header of headers) {
+    if (filteredResponseHeaders.has(header.name.toLowerCase())) {
+      header.value = "<filtered>";
     }
-  });
-
-  return result;
+  }
 }
 
-function sanitizeResponseHeaders(headers: Headers): HeadersRecord {
-  const result: HeadersRecord = {};
-
-  headers.forEach((value, key) => {
-    result[key] = filteredResponseHeaders.has(key.toLowerCase()) ? "<filtered>" : value;
-  });
-
-  return result;
-}
-
-function requestBodyDescription(request: Request): string | null {
-  if (!request.body) {
-    return null;
+function installFileReaderPolyfill(): void {
+  if ("FileReader" in globalThis) {
+    return;
   }
 
-  const contentType = request.headers.get("content-type");
-  if (contentType?.includes("multipart/form-data")) {
-    return "<multipart/form-data>";
+  class NodeFileReader {
+    result: string | null = null;
+    onabort: ((error: unknown) => void) | null = null;
+    onend: ((error: unknown) => void) | null = null;
+    onload: (() => void) | null = null;
+
+    async readAsDataURL(blob: Blob): Promise<void> {
+      try {
+        const buffer = Buffer.from(await blob.arrayBuffer());
+        const mediaType = blob.type || "application/octet-stream";
+
+        this.result = `data:${mediaType};base64,${buffer.toString("base64")}`;
+        this.onload?.();
+      } catch (error) {
+        this.onabort?.(error);
+        this.onend?.(error);
+      }
+    }
   }
 
-  return "<body>";
-}
-
-function writeCassette(path: string, cassette: Cassette): void {
-  mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, `${JSON.stringify(cassette, null, 2)}\n`);
+  (globalThis as unknown as { FileReader: typeof NodeFileReader }).FileReader = NodeFileReader;
 }

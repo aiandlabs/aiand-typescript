@@ -1,23 +1,41 @@
 import { describe, expect, it } from "vitest";
 
-import { sanitizeRequestHeaders } from "./helpers/cassettes";
+import { redactRecording } from "./helpers/cassettes";
 
 describe("cassette redaction", () => {
-  it("redacts request credentials and organization identifiers", () => {
-    const headers = sanitizeRequestHeaders(
-      new Headers({
-        Authorization: "Bearer sk-real-secret",
-        Cookie: "session=secret",
-        "X-AIAND-Org-ID": "org-secret",
-        "X-Org-ID": "org-secret",
-        "X-Request-Source": "aiand-typescript-tests",
-      }),
-    );
+  it("redacts sensitive cassette headers", () => {
+    const recording = {
+      request: {
+        headers: [
+          { name: "Authorization", value: "Bearer token" },
+        ],
+      },
+      response: {
+        headers: [
+          { name: "Authorization", value: "Bearer token" },
+          { name: "CF-Ray", value: "cf-secret" },
+          { name: "Set-Cookie", value: "cookie-value" },
+          { name: "X-AIAND-Org-ID", value: "org-secret" },
+          { name: "X-Org-ID", value: "org-secret" },
+          { name: "X-Request-ID", value: "req-secret" },
+          { name: "X-RateLimit-Remaining-Requests", value: "42" },
+        ],
+      },
+    };
 
-    expect(headers.authorization).toBe("Bearer <AIAND_API_KEY>");
-    expect(headers.cookie).toBe("<filtered>");
-    expect(headers["x-aiand-org-id"]).toBe("<filtered>");
-    expect(headers["x-org-id"]).toBe("<filtered>");
-    expect(headers["x-request-source"]).toBe("aiand-typescript-tests");
+    redactRecording(recording);
+
+    expect(recording.request.headers).toEqual([
+      { name: "Authorization", value: "Bearer <AIAND_API_KEY>" },
+    ]);
+    expect(recording.response.headers).toEqual([
+      { name: "Authorization", value: "<filtered>" },
+      { name: "CF-Ray", value: "<filtered>" },
+      { name: "Set-Cookie", value: "<filtered>" },
+      { name: "X-AIAND-Org-ID", value: "<filtered>" },
+      { name: "X-Org-ID", value: "<filtered>" },
+      { name: "X-Request-ID", value: "<filtered>" },
+      { name: "X-RateLimit-Remaining-Requests", value: "<filtered>" },
+    ]);
   });
 });

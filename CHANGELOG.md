@@ -22,7 +22,7 @@ Initial public TypeScript SDK release for the ai& API.
   regeneration instructions.
 - `scripts/update-sdk` for downloading the latest spec and regenerating the client with
   OpenAPI Generator.
-- VCR-style fetch cassette test harness for live API coverage.
+- PollyJS VCR-style cassette test harness for live API coverage.
 - Apache License 2.0.
 
 ### Implementation Notes
@@ -33,3 +33,4 @@ Initial public TypeScript SDK release for the ai& API.
 - Keeps OpenAPI model property names as originally specified, so request and response
   objects use the API's snake_case field names.
 - Applies a small generated-client compatibility patch for chat message `anyOf` typing.
+- Uses PollyJS with filesystem-persisted HAR cassettes for recorded API tests.
