@@ -17,11 +17,11 @@ describe("generated models", () => {
   });
 
   it("adds bearer auth from the access token", async () => {
-    const client = new OpenaiApi(new Configuration({ accessToken: "sk-test" }));
+    const client = new OpenaiApi(new Configuration({ accessToken: "test-api-key" }));
 
     const request = await client.listModelsRequestOpts();
 
-    expect(request.headers.Authorization).toBe("Bearer sk-test");
+    expect(request.headers.Authorization).toBe("Bearer test-api-key");
   });
 
   it("accepts string pricing and typed model metadata", () => {
@@ -84,4 +84,3 @@ describe("generated models", () => {
     expect(serialized).not.toHaveProperty("truncation");
   });
 });
-

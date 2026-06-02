@@ -268,23 +268,23 @@ behavior, not reformatted by hand.
 ## Recording HTTP Cassettes
 
 Tests use [PollyJS](https://netflix.github.io/pollyjs/) for VCR-style live API coverage.
-Polly records HAR fixtures under `tests/cassettes`.
+Polly records HAR fixtures under its default `recordings` directory.
 
-To record cassettes, create `.env.test`:
+Committed recordings are replayed by default when you run:
 
 ```sh
-AIAND_API_KEY=sk-your-real-aiand-api-key
+npm test
 ```
 
-Then run:
+To refresh or add recordings, export an API key and run the focused VCR suite:
 
 ```sh
-./scripts/record-cassettes
+export AIAND_API_KEY=your-aiand-api-key
+npm run test:vcr
 ```
 
 The cassette config filters the request `Authorization` header and the same response
-headers as the Python SDK before HAR fixtures are written. The recording script sets
-`AIAND_VCR_RECORD_MODE=once`. Do not commit `.env.test`. Only commit sanitized cassette
+headers as the Python SDK before HAR fixtures are written. Only commit sanitized cassette
 files.
 
 The VCR suite records one Polly HAR cassette per public endpoint group:
@@ -351,7 +351,6 @@ Most SDK files are generated. The main hand-maintained files are:
 - `vitest.config.ts`
 - `scripts/update-sdk`
 - `scripts/patch-generated-client.mjs`
-- `scripts/record-cassettes`
 - `tests/`
 
 `scripts/patch-generated-client.mjs` patches the generated `ChatCompletionMessage` type.
