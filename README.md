@@ -32,7 +32,7 @@ The current SDK version is `0.1.0`. See [CHANGELOG.md](CHANGELOG.md) for release
 Set your API key in the environment:
 
 ```sh
-export AIAND_API_KEY="sk-..."
+export AIAND_API_KEY="your-aiand-api-key"
 ```
 
 Create a client:
