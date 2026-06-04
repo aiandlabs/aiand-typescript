@@ -7,11 +7,14 @@ on:
     branches: [main]
 
 jobs:
-  preflight:
+  # Full lint/test/build on the Node versions the dev toolchain supports.
+  # (vitest 4 requires Node >=20.)
+  test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["18", "20", "22"]
+        node-version: ["20", "22", "24"]
     steps:
       - uses: actions/checkout@v4
 
@@ -31,3 +34,25 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  # The published SDK declares engines.node >=18. vitest can't run on 18, so we
+  # don't run the suite there — we just prove the built artifact loads on the
+  # minimum supported runtime.
+  compat-node18:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Import built artifact on Node 18
+        run: node -e "import('./dist/index.js').then(m => console.log('import ok on node 18,', Object.keys(m).length, 'exports'))"
