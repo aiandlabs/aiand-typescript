@@ -1,0 +1,17 @@
+# Hand-maintained project files.
+README.md
+CHANGELOG.md
+LICENSE
+package.json
+package-lock.json
+tsconfig.json
+vitest.config.ts
+.gitignore
+.openapi-generator-ignore
+openapi-generator-config.yaml
+openapitools.json
+scripts/**
+tests/**
+
+# Generated project plumbing we omit.
+git_push.sh
