@@ -11,21 +11,21 @@ npm パッケージ名は `@aiand/sdk` です。
 
 ## インストール
 
-このチェックアウトからインストールする場合:
+```sh
+npm install @aiand/sdk
+```
+
+現在の SDK バージョンは `0.1.0` です。リリースノートは [CHANGELOG.md](CHANGELOG.md) を参照してください。
+
+### ソースから使う場合
+
+SDK 自体を開発する場合:
 
 ```sh
 cd aiand-typescript
 npm install
 npm run build
 ```
-
-このパッケージが公開されたら、次のようにインストールします:
-
-```sh
-npm install @aiand/sdk
-```
-
-現在の SDK バージョンは `0.1.0` です。リリースノートは [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## 使い方
 
