@@ -11,21 +11,21 @@ The npm package name is `@aiand/sdk`.
 
 ## Installation
 
-From this checkout:
+```sh
+npm install @aiand/sdk
+```
+
+The current SDK version is `0.1.0`. See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
+### From source
+
+To work on the SDK itself:
 
 ```sh
 cd aiand-typescript
 npm install
 npm run build
 ```
-
-Once this package is published, install it as:
-
-```sh
-npm install @aiand/sdk
-```
-
-The current SDK version is `0.1.0`. See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ## Usage
 
