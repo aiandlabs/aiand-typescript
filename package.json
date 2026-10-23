@@ -45,6 +45,13 @@
   "engines": {
     "node": ">=18"
   },
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": ">=11.10.0",
+      "onFail": "warn"
+    }
+  },
   "scripts": {
     "update-sdk": "./scripts/update-sdk",
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
